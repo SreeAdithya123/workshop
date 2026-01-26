@@ -12,8 +12,8 @@ export default async function MyEventsPage() {
         process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
         {
             cookies: {
-                getAll() {
-                    return cookieStore.getAll();
+                get(name: string) {
+                    return cookieStore.get(name)?.value;
                 },
             },
         }
@@ -80,7 +80,7 @@ export default async function MyEventsPage() {
                                 </div>
 
                                 <div className="flex flex-wrap gap-4 text-sm text-muted-foreground mb-6">
-                                    <span className="flex items-center gap-1"><Calendar size={14} /> {event.date}</span>
+                                    <span className="flex items-center gap-1" suppressHydrationWarning={true}><Calendar size={14} /> {event.date}</span>
                                     <span className="flex items-center gap-1"><Clock size={14} /> {event.time}</span>
                                 </div>
 

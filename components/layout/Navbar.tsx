@@ -3,20 +3,50 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui/Button";
-import { Menu, X } from "lucide-react";
+import { Menu, X, User } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { createBrowserClient } from "@supabase/auth-helpers-nextjs";
+import { useRouter } from "next/navigation";
 
 export function Navbar() {
     const [isScrolled, setIsScrolled] = useState(false);
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+    const [user, setUser] = useState<any>(null);
+    const router = useRouter();
+
+    const supabase = createBrowserClient(
+        process.env.NEXT_PUBLIC_SUPABASE_URL!,
+        process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+    );
 
     useEffect(() => {
         const handleScroll = () => {
             setIsScrolled(window.scrollY > 20);
         };
         window.addEventListener("scroll", handleScroll);
-        return () => window.removeEventListener("scroll", handleScroll);
-    }, []);
+
+        // Check session
+        const getSession = async () => {
+            const { data: { session } } = await supabase.auth.getSession();
+            setUser(session?.user ?? null);
+        };
+        getSession();
+
+        const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+            setUser(session?.user ?? null);
+        });
+
+        return () => {
+            window.removeEventListener("scroll", handleScroll);
+            subscription.unsubscribe();
+        };
+    }, [supabase]);
+
+    const handleSignOut = async () => {
+        await supabase.auth.signOut();
+        router.push("/");
+        router.refresh();
+    };
 
     const navLinks = [
         { name: "Home", href: "/" },
@@ -58,13 +88,33 @@ export function Navbar() {
                     ))}
                 </div>
 
-                {/* CTA Button */}
-                <div className="hidden md:block">
-                    <Link href="/register">
-                        <Button variant="secondary" size="sm" className="font-semibold text-white shadow-md">
-                            Register Now
-                        </Button>
-                    </Link>
+                {/* Auth Buttons */}
+                <div className="hidden md:flex items-center gap-4">
+                    {user ? (
+                        <>
+                            <Link href="/dashboard">
+                                <Button variant="ghost" size="sm" className="font-medium text-foreground">
+                                    Dashboard
+                                </Button>
+                            </Link>
+                            <Button variant="outline" size="sm" onClick={handleSignOut} className="font-medium border-muted text-foreground">
+                                Sign Out
+                            </Button>
+                        </>
+                    ) : (
+                        <>
+                            <Link href="/login">
+                                <Button variant="ghost" size="sm" className="font-medium text-foreground">
+                                    Login
+                                </Button>
+                            </Link>
+                            <Link href="/register">
+                                <Button variant="secondary" size="sm" className="font-semibold text-white shadow-md px-6 rounded-full">
+                                    Register Now
+                                </Button>
+                            </Link>
+                        </>
+                    )}
                 </div>
 
                 {/* Mobile Toggle */}
@@ -94,9 +144,26 @@ export function Navbar() {
                                 {link.name}
                             </Link>
                         ))}
-                        <Link href="/register" onClick={() => setMobileMenuOpen(false)}>
-                            <Button className="w-full" variant="secondary">Register Now</Button>
-                        </Link>
+                        <hr className="border-muted/20" />
+                        {user ? (
+                            <>
+                                <Link href="/dashboard" onClick={() => setMobileMenuOpen(false)}>
+                                    <Button className="w-full" variant="ghost">Dashboard</Button>
+                                </Link>
+                                <Button className="w-full" variant="outline" onClick={() => { handleSignOut(); setMobileMenuOpen(false); }}>
+                                    Sign Out
+                                </Button>
+                            </>
+                        ) : (
+                            <>
+                                <Link href="/login" onClick={() => setMobileMenuOpen(false)}>
+                                    <Button className="w-full" variant="ghost">Login</Button>
+                                </Link>
+                                <Link href="/register" onClick={() => setMobileMenuOpen(false)}>
+                                    <Button className="w-full rounded-full" variant="secondary">Register Now</Button>
+                                </Link>
+                            </>
+                        )}
                     </div>
                 </div>
             )}

@@ -3,8 +3,7 @@ import { Calendar, Clock, DollarSign, Users } from "lucide-react";
 import Link from "next/link";
 import { createServerClient } from "@supabase/auth-helpers-nextjs";
 import { cookies } from "next/headers";
-
-import { RegisterButton } from "./RegisterButton";
+import { Button } from "@/components/ui/Button";
 
 export default async function EventsListPage() {
     const cookieStore = cookies();
@@ -13,19 +12,24 @@ export default async function EventsListPage() {
         process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
         {
             cookies: {
-                getAll() {
-                    return cookieStore.getAll();
+                get(name: string) {
+                    return cookieStore.get(name)?.value;
                 },
             },
         }
     );
 
-    // Fetch the single workshop
-    const { data: workshop } = await supabase.from('workshops').select('*').single();
+    // Fetch the single most recent workshop
+    const { data: workshop } = await supabase
+        .from('workshops')
+        .select('*')
+        .order('created_at', { ascending: false })
+        .limit(1)
+        .maybeSingle();
     // In this "Single Workshop" model, these "events" are effectively the agenda items/sessions
     const events = workshop?.agenda || [];
     const workshopId = workshop?.id;
-    const price = workshop?.fee || 1499;
+    const price = workshop?.fee || 1400;
 
     return (
         <div className="space-y-8">
@@ -41,7 +45,11 @@ export default async function EventsListPage() {
                     </div>
                 </div>
                 {workshopId && (
-                    <RegisterButton workshopId={workshopId} price={price} title={workshop.title} />
+                    <Link href="/register">
+                        <Button className="w-full md:w-auto font-bold rounded-full h-11 px-8 shadow-lg shadow-primary/20">
+                            Register Now - ₹{price}
+                        </Button>
+                    </Link>
                 )}
             </div>
 

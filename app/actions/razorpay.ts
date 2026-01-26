@@ -35,10 +35,10 @@ export async function createRazorpayOrder(amount: number, workshopId: string) {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
-                "Authorization": `Bearer ${process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY}`, // Or service role if needed, but Anon should be fine if RLS/function allows
+                "Authorization": `Bearer ${process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY}`,
             },
             body: JSON.stringify({
-                amount,
+                amount: Math.round(amount * 100), // Convert to Paise
                 receipt: `rcpt_${Date.now().toString().slice(-8)}`,
                 notes: {
                     user_id: session.user.id,
@@ -69,7 +69,15 @@ export async function verifyRazorpayPayment(
     razorpay_order_id: string,
     razorpay_payment_id: string,
     razorpay_signature: string,
-    workshopId: string
+    workshopId: string,
+    amount: number,
+    userData: {
+        firstName: string;
+        lastName: string;
+        email: string;
+        phone?: string;
+        promoCode?: string;
+    }
 ) {
     const cookieStore = cookies();
     const supabase = createServerClient(
@@ -88,7 +96,7 @@ export async function verifyRazorpayPayment(
     if (!session) return { success: false, message: "Unauthorized" };
 
     try {
-        // Call Edge Function to verify
+        // 1. Call Edge Function to verify signature
         const response = await fetch(getFunctionUrl("/razorpay/verify"), {
             method: "POST",
             headers: {
@@ -101,7 +109,7 @@ export async function verifyRazorpayPayment(
                 razorpay_signature,
                 user_id: session.user.id,
                 workshop_id: workshopId,
-                amount: 1499 // Optional, passed for record keeping
+                amount: amount
             })
         });
 
@@ -110,6 +118,29 @@ export async function verifyRazorpayPayment(
         if (!response.ok || !data.verified) {
             console.error("Verification Failed:", data);
             return { success: false, message: data.error || "Payment verification failed" };
+        }
+
+        // 2. Payment is VERIFIED. Now, and only now, register the user in the database.
+        const { error } = await supabase.from("registrations").insert({
+            user_id: session.user.id,
+            workshop_id: workshopId || null,
+            first_name: userData.firstName,
+            last_name: userData.lastName,
+            email: userData.email,
+            phone: userData.phone || null,
+            payment_method: "razorpay",
+            payment_status: "paid",
+            payment_id: razorpay_payment_id,
+            amount: amount,
+            promo_code: userData.promoCode || null,
+            registered_at: new Date().toISOString(),
+        });
+
+        if (error) {
+            console.error("DB Registration Error:", error);
+            // Even if DB insert fails, the payment WAS successful. 
+            // In a production app, you'd want a reconciliation cron or better error handling here.
+            return { success: false, message: "Payment verified but failed to save registration. Please contact support with Payment ID: " + razorpay_payment_id };
         }
 
         return { success: true };

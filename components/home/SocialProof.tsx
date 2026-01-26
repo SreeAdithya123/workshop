@@ -1,8 +1,8 @@
 import { Users, Star, GraduationCap, Infinity as InfinityIcon } from "lucide-react";
 
-export function SocialProof() {
+export function SocialProof({ studentCount = "500+" }: { studentCount?: string }) {
     const stats = [
-        { icon: Users, label: "Students Enrolled", value: "500+" },
+        { icon: Users, label: "Students Enrolled", value: studentCount },
         { icon: Star, label: "Average Rating", value: "4.9/5" },
         { icon: GraduationCap, label: "Certificate Included", value: "Yes" },
         { icon: InfinityIcon, label: "Lifetime Access", value: "Guaranteed" },

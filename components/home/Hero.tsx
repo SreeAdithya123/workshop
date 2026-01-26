@@ -5,8 +5,24 @@ import { Button } from "@/components/ui/Button";
 import { Card3D } from "@/components/ui/Card3D";
 import { Calendar, Clock, Globe, Users, ArrowRight } from "lucide-react";
 import Link from "next/link";
+import { useEffect, useState } from "react";
+import { createBrowserClient } from "@supabase/auth-helpers-nextjs";
 
 export function Hero() {
+    const [user, setUser] = useState<any>(null);
+    const supabase = createBrowserClient(
+        process.env.NEXT_PUBLIC_SUPABASE_URL!,
+        process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+    );
+
+    useEffect(() => {
+        const getSession = async () => {
+            const { data: { session } } = await supabase.auth.getSession();
+            setUser(session?.user ?? null);
+        };
+        getSession();
+    }, [supabase]);
+
     return (
         <section className="relative pt-32 pb-20 overflow-hidden bg-background text-foreground">
             <div className="container mx-auto px-4 md:px-6">
@@ -40,11 +56,19 @@ export function Hero() {
 
                         {/* CTAs */}
                         <div className="flex flex-col sm:flex-row gap-4 mb-10">
-                            <Link href="/register">
-                                <Button size="lg" variant="secondary" className="w-full sm:w-auto text-lg font-semibold shadow-xl shadow-secondary/20 hover:scale-105 transition-transform">
-                                    Join The Challenge - ₹1,499
-                                </Button>
-                            </Link>
+                            {user ? (
+                                <Link href="/dashboard">
+                                    <Button size="lg" variant="secondary" className="w-full sm:w-auto text-lg font-semibold shadow-xl shadow-secondary/20 hover:scale-105 transition-transform rounded-full h-12 px-8">
+                                        Go to Dashboard
+                                    </Button>
+                                </Link>
+                            ) : (
+                                <Link href="/signup">
+                                    <Button size="lg" variant="secondary" className="w-full sm:w-auto text-lg font-semibold shadow-xl shadow-secondary/20 hover:scale-105 transition-transform rounded-full h-12 px-8">
+                                        Register Now - ₹1,400
+                                    </Button>
+                                </Link>
+                            )}
                             <Link href="/structure">
                                 <Button variant="outline" size="lg" className="w-full sm:w-auto text-lg border-primary text-primary hover:bg-primary/10">
                                     View Syllabus
