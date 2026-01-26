@@ -80,15 +80,18 @@ export default function AboutPage() {
                     <div className="flex flex-col md:flex-row items-center gap-12 max-w-5xl mx-auto">
                         <div className="w-full md:w-1/3">
                             <Card3D depth={10}>
-                                <div className="aspect-[4/5] bg-muted rounded-2xl overflow-hidden relative shadow-xl border border-muted/20">
-                                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent z-10" />
-                                    {/* Placeholder for Image */}
-                                    <div className="absolute inset-0 flex items-center justify-center text-muted-foreground">
-                                        Instructor Image
-                                    </div>
+                                <div className="aspect-[3/4] bg-muted rounded-2xl overflow-hidden relative shadow-2xl border border-white/10 group">
+                                    <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent z-10 opacity-80 group-hover:opacity-70 transition-opacity duration-500" />
+                                    {/* Instructor Image */}
+                                    <img
+                                        src="/instructor.png"
+                                        alt="K Sree Adithya"
+                                        className="w-full h-full object-cover object-top transform group-hover:scale-105 transition-transform duration-700 ease-out"
+                                    />
                                     <div className="absolute bottom-6 left-6 z-20 text-white">
-                                        <h3 className="text-xl font-bold">K Sree Adithya</h3>
-                                        <p className="text-white/80 text-sm">AI Engineer & Mentor</p>
+                                        <div className="w-10 h-1 bg-primary mb-3 rounded-full" />
+                                        <h3 className="text-2xl font-bold tracking-tight mb-1">K Sree Adithya</h3>
+                                        <p className="text-white/90 text-sm font-medium tracking-wide uppercase opacity-90">AI Engineer & Mentor</p>
                                     </div>
                                 </div>
                             </Card3D>
@@ -96,12 +99,12 @@ export default function AboutPage() {
                         <div className="w-full md:w-2/3">
                             <h2 className="text-3xl font-heading font-bold text-foreground mb-6">Meet Your Instructor</h2>
                             <p className="text-foreground/80 leading-relaxed mb-6">
-                                "I'm a computer science student just like you, passionate about AI and building projects. I've led workshops for 200+ students, organized IEEE tech events, and built multiple AI-powered applications. My goal is to make AI accessible to everyone."
+                                "I am an AI Engineer and builder focused on creating real-world AI products. I develop AI agents, automation systems, and AI-powered platforms that turn complex problems into scalable solutions. My mission is to build intelligent technology that delivers measurable impact and makes AI accessible for people and businesses."
                             </p>
                             <div className="space-y-4 mb-8">
                                 <div className="flex items-center gap-3">
                                     <span className="w-2 h-2 rounded-full bg-primary" />
-                                    <span className="text-foreground font-medium">IEEE Student Chapter Leader</span>
+                                    <span className="text-foreground font-medium">Entrepreneur</span>
                                 </div>
                                 <div className="flex items-center gap-3">
                                     <span className="w-2 h-2 rounded-full bg-primary" />
@@ -109,7 +112,7 @@ export default function AboutPage() {
                                 </div>
                                 <div className="flex items-center gap-3">
                                     <span className="w-2 h-2 rounded-full bg-primary" />
-                                    <span className="text-foreground font-medium">Built 10+ AI Projects</span>
+                                    <span className="text-foreground font-medium">Built 20+ AI Projects</span>
                                 </div>
                             </div>
                             <div className="flex gap-4">
