@@ -39,12 +39,13 @@ export function Footer() {
 
                     {/* Column 3: Resources */}
                     <div>
-                        <h3 className="font-bold text-foreground mb-4">Resources</h3>
+                        <h3 className="font-bold text-foreground mb-4">Legal & Support</h3>
                         <ul className="space-y-3 text-sm">
-                            <li><Link href="#" className="text-foreground/70 hover:text-primary transition-colors">Sample Projects</Link></li>
-                            <li><Link href="#" className="text-foreground/70 hover:text-primary transition-colors">Blog</Link></li>
-                            <li><Link href="#" className="text-foreground/70 hover:text-primary transition-colors">Learning Roadmap</Link></li>
-                            <li><Link href="#" className="text-foreground/70 hover:text-primary transition-colors">Community Guidelines</Link></li>
+                            <li><Link href="/contact-us" className="text-foreground/70 hover:text-primary transition-colors">Contact Us</Link></li>
+                            <li><Link href="/terms-and-conditions" className="text-foreground/70 hover:text-primary transition-colors">Terms of Service</Link></li>
+                            <li><Link href="/privacy-policy" className="text-foreground/70 hover:text-primary transition-colors">Privacy Policy</Link></li>
+                            <li><Link href="/refund-policy" className="text-foreground/70 hover:text-primary transition-colors">Refund Policy</Link></li>
+                            <li><Link href="/shipping-policy" className="text-foreground/70 hover:text-primary transition-colors">Shipping Policy</Link></li>
                         </ul>
                     </div>
 
