@@ -61,3 +61,36 @@ export async function removeRegistration(registrationId: string) {
         return { success: false, message: error.message || "Failed to remove registration" };
     }
 }
+
+export async function addUserRegistration(userId: string, workshopId: string) {
+    try {
+        const supabase = await getAdminClient();
+
+        // Check if already registered
+        const { data: existing } = await supabase
+            .from("registrations")
+            .select("id")
+            .eq("user_id", userId)
+            .eq("workshop_id", workshopId)
+            .single();
+
+        if (existing) {
+            return { success: false, message: "User is already registered for this workshop." };
+        }
+
+        const { error } = await supabase.from("registrations").insert({
+            user_id: userId,
+            workshop_id: workshopId,
+            payment_status: 'manual_admin',
+            amount_paid: 0
+        });
+
+        if (error) throw error;
+
+        revalidatePath("/admin/users");
+        return { success: true, message: "User registered successfully" };
+    } catch (error: any) {
+        console.error("Add Registration Error:", error);
+        return { success: false, message: error.message || "Failed to add registration" };
+    }
+}

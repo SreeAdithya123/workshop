@@ -18,8 +18,8 @@ export default function EventDetailsPage({ params }: { params: { id: string } })
             - Chain-of-Thought reasoning
             - Advanced techniques for code generation and creative writing
         `,
-        date: "Feb 15, 2026",
-        time: "10:00 AM - 2:00 PM",
+        date: "Jan 31, 2026",
+        time: "7:00 PM - 10:00 PM",
         fee: "₹499",
         participants: 120,
         image: "bg-blue-100",

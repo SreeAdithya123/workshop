@@ -44,6 +44,12 @@ export default async function ManageUsersPage() {
         `)
         .order('updated_at', { ascending: false });
 
+    // Fetch Workshops for Adding Capability
+    const { data: workshops } = await supabase
+        .from("workshops")
+        .select("id, title")
+        .order('created_at', { ascending: false });
+
     return (
         <div className="space-y-8 animate-in fade-in duration-500">
             <div className="flex items-center justify-between">
@@ -114,7 +120,11 @@ export default async function ManageUsersPage() {
                                 </td>
                                 <td className="px-6 py-4 text-right">
                                     <div className="flex items-center justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                                        <UserActions userId={user.id} isAdmin={user.email === 'adithya.kandikonda@sasi.ac.in'} />
+                                        <UserActions
+                                            userId={user.id}
+                                            isAdmin={user.email === 'adithya.kandikonda@sasi.ac.in'}
+                                            availableWorkshops={workshops || []}
+                                        />
                                     </div>
                                 </td>
                             </tr>

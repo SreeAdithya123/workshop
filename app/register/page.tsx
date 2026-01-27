@@ -130,7 +130,7 @@ export default function RegisterPage() {
 
                     if (verifyRes.success) {
                         setStatus({ success: true, message: "Success! You are now enrolled in the workshop." });
-                        setTimeout(() => router.push("/dashboard/my-events"), 2000);
+                        setTimeout(() => router.push("/register/success"), 2000);
                     } else {
                         setStatus({ success: false, message: verifyRes.message || "Payment verification failed." });
                         setIsSubmitting(false);
@@ -223,7 +223,7 @@ export default function RegisterPage() {
                                             name="phone"
                                             type="tel"
                                             className="w-full px-4 py-2 bg-background border border-muted rounded-lg focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all text-foreground placeholder:text-muted-foreground"
-                                            placeholder="+91 98765 43210"
+                                            placeholder="+91 7013271894"
                                         />
                                     </div>
                                 </div>

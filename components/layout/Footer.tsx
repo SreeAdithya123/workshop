@@ -53,13 +53,13 @@ export function Footer() {
                         <h3 className="font-bold text-foreground mb-4">Contact</h3>
                         <ul className="space-y-3 text-sm text-foreground/70">
                             <li className="flex items-center gap-2">
-                                <Mail size={16} className="text-primary" /> hello@aiworkshop.com
+                                <Mail size={16} className="text-primary" /> ai.workshop.3days@gmail.com
                             </li>
                             <li className="flex items-center gap-2">
-                                <Phone size={16} className="text-primary" /> +91-9876543210
+                                <Phone size={16} className="text-primary" /> +91-7013271894
                             </li>
                             <li className="flex items-center gap-2">
-                                <Mail size={16} className="text-primary" /> support@aiworkshop.com
+                                <Mail size={16} className="text-primary" /> ai.workshop.3days@gmail.com
                             </li>
                         </ul>
                     </div>
@@ -67,13 +67,15 @@ export function Footer() {
 
                 <div className="border-t border-muted/20 pt-8 text-xs text-center md:text-left flex flex-col md:flex-row justify-between items-center text-foreground/50">
                     <p>&copy; 2026 AI Workshop. All rights reserved.</p>
-                    <div className="flex gap-6 mt-4 md:mt-0">
-                        <Link href="#" className="hover:text-foreground">Terms of Service</Link>
-                        <Link href="#" className="hover:text-foreground">Privacy Policy</Link>
-                        <Link href="#" className="hover:text-foreground">Refund Policy</Link>
+                    <div className="flex gap-6 mt-4 md:mt-0 flex-wrap justify-center md:justify-end">
+                        <Link href="/terms-and-conditions" className="hover:text-foreground">Terms of Service</Link>
+                        <Link href="/privacy-policy" className="hover:text-foreground">Privacy Policy</Link>
+                        <Link href="/refund-policy" className="hover:text-foreground">Refund Policy</Link>
+                        <Link href="/shipping-policy" className="hover:text-foreground">Shipping Policy</Link>
+                        <Link href="/contact-us" className="hover:text-foreground md:hidden">Contact Us</Link>
                     </div>
                 </div>
             </div>
-        </footer >
+        </footer>
     );
 }

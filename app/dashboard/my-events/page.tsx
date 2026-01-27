@@ -34,7 +34,7 @@ export default async function MyEventsPage() {
                 id: reg.id,
                 title: reg.workshops.title,
                 date: new Date(reg.workshops.date).toLocaleDateString(),
-                time: "10:00 AM Onwards", // This could be improved if start_time was in DB
+                time: "7:00 PM - 10:00 PM", // This could be improved if start_time was in DB
                 status: reg.payment_status === 'captured' ? 'Confirmed' : 'Pending',
                 image: "bg-blue-100", // Generic image or from workshop
                 workshopId: reg.workshop_id

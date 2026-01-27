@@ -84,7 +84,7 @@ export function Hero() {
                             </div>
                             <div className="flex items-center gap-2">
                                 <Calendar size={18} className="text-primary" />
-                                <span>Feb 15-17, 2026</span>
+                                <span>Jan 31 - Feb 02, 2026</span>
                             </div>
                         </div>
                     </motion.div>
