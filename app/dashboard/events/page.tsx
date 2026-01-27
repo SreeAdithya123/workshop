@@ -76,7 +76,7 @@ export default async function EventsListPage() {
                                     </div>
 
                                     {/* Link to specific session details or global details */}
-                                    <Link href={`/dashboard/events`} className="mt-auto">
+                                    <Link href={`/dashboard/events/${event.id}`} className="mt-auto">
                                         <button className="w-full py-2 bg-primary/10 text-primary font-bold rounded-lg hover:bg-primary hover:text-white transition-all text-sm">
                                             View Details
                                         </button>
