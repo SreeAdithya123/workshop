@@ -62,15 +62,24 @@ export default function RegisterPage() {
         checkUser();
     }, [supabase, router]);
 
-    const VALID_CODES = ["SASI_2026", "BALAJI_2026", "SREE_2026"];
+    const VALID_CODES_199 = ["SASI_2026", "BALAJI_2026"];
+    const VALID_CODES_299 = ["SREE_2026"];
 
     const isDiscountApplied = useMemo(() => {
-        return VALID_CODES.includes(promoCode.trim().toUpperCase());
+        const code = promoCode.trim().toUpperCase();
+        return VALID_CODES_199.includes(code) || VALID_CODES_299.includes(code);
     }, [promoCode]);
 
     const basePrice = 1400;
-    const finalPrice = isDiscountApplied ? 199 : 1400;
-    const discountAmount = isDiscountApplied ? (basePrice - 199) : 0;
+
+    const finalPrice = useMemo(() => {
+        const code = promoCode.trim().toUpperCase();
+        if (VALID_CODES_199.includes(code)) return 199;
+        if (VALID_CODES_299.includes(code)) return 299;
+        return 1400;
+    }, [promoCode]);
+
+    const discountAmount = isDiscountApplied ? (basePrice - finalPrice) : 0;
 
     async function handleSubmit(formData: FormData) {
         setIsSubmitting(true);
