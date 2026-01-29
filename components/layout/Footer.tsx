@@ -66,9 +66,14 @@ export function Footer() {
                     </div>
                 </div>
 
-                <div className="border-t border-muted/20 pt-8 text-xs text-center md:text-left flex flex-col md:flex-row justify-between items-center text-foreground/50">
-                    <p>&copy; 2026 AI Workshop. All rights reserved.</p>
-                    <div className="flex gap-6 mt-4 md:mt-0 flex-wrap justify-center md:justify-end">
+                <div className="border-t border-muted/20 pt-8 text-xs text-center text-foreground/70">
+                    <p>
+                        Owned & operated by Vyoman Interviewer
+                        <br />
+                        Merchant: KANDIKONDA DINAMANI PRABHAKARA SREE ADITHYA
+                    </p>
+
+                    <div className="flex gap-6 mt-4 justify-center flex-wrap">
                         <Link href="/terms-and-conditions" className="hover:text-foreground">Terms of Service</Link>
                         <Link href="/privacy-policy" className="hover:text-foreground">Privacy Policy</Link>
                         <Link href="/refund-policy" className="hover:text-foreground">Refund Policy</Link>
